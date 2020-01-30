@@ -6,17 +6,19 @@ A wrapper over `react-native`'s `TextInput` that accepts numbers in the specifie
 
     import React from 'react';
 
-    import { InternationalNumberInput } from 'react-native-international-number-input';
-    import { EasternArabicNumeralSystem } from 'react-native-international-number-input/systems';
+    import {
+        NumeralSystems,
+        InternationalNumberInput,
+    } from 'react-native-international-number-input';
 
     const MyComponent = () => {
         const [value, setValue] = React.useState(null);
 
         return (
             <InternationalNumberInput
-                numeralSystem={EasternArabicNumeralSystem}
                 value={value}
                 onChange={setValue}
+                numeralSystem={NumeralSystems.EasternArabic}
             />
         );
     };
