@@ -1,9 +1,11 @@
 import React from 'react';
-import { TextInput, KeyboardTypeOptions } from 'react-native';
+import { TextInput } from 'react-native';
 import isNil from 'lodash/isNil';
 
-import { NumeralSystem } from './types';
-import translateNumber from './translateNumber';
+import { parseNumber } from './parse';
+import { NumeralSystem } from './systems';
+import { translateNumber } from './translate';
+import keyboardTypeToNumberType from './keyboardTypeToNumberType';
 
 interface Props
   extends Omit<React.ComponentProps<typeof TextInput>, 'onChangeText' | 'value' | 'onChange'> {
@@ -11,22 +13,6 @@ interface Props
   value: number | null;
   onChange: (value: number | null) => void;
 }
-
-const determineInterpretFunc = (keyboardType: KeyboardTypeOptions) => {
-  switch (keyboardType) {
-    case 'decimal-pad':
-    case 'numeric':
-      return Number.parseFloat;
-
-    case 'number-pad':
-      return Number.parseInt;
-
-    default:
-      throw new Error(
-        'Invalid keyboardType, this is a numeric input. Use a keyboardType that accepts numbers only.',
-      );
-  }
-};
 
 const InternationalNumberInput = ({
   numeralSystem,
@@ -38,11 +24,11 @@ const InternationalNumberInput = ({
 }: Props) => {
   const [text, setText] = React.useState<string | null>(!isNil(value) ? value.toString() : null);
 
-  const interpretFunc = determineInterpretFunc(keyboardType);
+  const numberType = keyboardTypeToNumberType(keyboardType);
 
   const convertToNumber = React.useCallback(
-    (v: string | null) => translateNumber(interpretFunc, numeralSystem, v),
-    [numeralSystem],
+    (v: string | null) => parseNumber(numberType, translateNumber(numeralSystem, v)),
+    [numeralSystem, numberType],
   );
 
   React.useEffect(() => {
@@ -60,7 +46,7 @@ const InternationalNumberInput = ({
         (text: string) => {
           const number = convertToNumber(text);
 
-          if (Number.isNaN(number)) {
+          if (isNil(number)) {
             onChange(null);
             setText('');
           } else {

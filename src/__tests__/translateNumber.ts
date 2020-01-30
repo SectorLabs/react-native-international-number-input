@@ -1,5 +1,5 @@
-import translateNumber from '../translateNumber';
-import { NumeralSystem } from '../types';
+import { NumeralSystem } from '../systems';
+import { translateNumber } from '../translate';
 
 const mockNumeralSystem: NumeralSystem = {
   numberCharacters: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
@@ -8,27 +8,32 @@ const mockNumeralSystem: NumeralSystem = {
 
 describe('translateNumbers', () => {
   it('translates integers', () => {
-    const number = translateNumber(Number.parseFloat, mockNumeralSystem, 'rt');
-    expect(number).toBe(34);
+    const translatedValue = translateNumber(mockNumeralSystem, 'rt');
+    expect(translatedValue).toBe('34');
   });
 
   it('translates decimals', () => {
-    const number = translateNumber(Number.parseFloat, mockNumeralSystem, 'rt|qw');
-    expect(number).toBe(34.01);
+    const translatedValue = translateNumber(mockNumeralSystem, 'rt|qw');
+    expect(translatedValue).toBe('34.01');
   });
 
-  it('handles western arabic numbers', () => {
-    const number = translateNumber(Number.parseFloat, mockNumeralSystem, '23.09');
-    expect(number).toBe(23.09);
+  it('handles western arabic translatedValues', () => {
+    const translatedValue = translateNumber(mockNumeralSystem, '23.09');
+    expect(translatedValue).toBe('23.09');
   });
 
-  it('allows mixing in western arabic numbers', () => {
-    const number = translateNumber(Number.parseFloat, mockNumeralSystem, 'rt.09');
-    expect(number).toBe(34.09);
+  it('allows mixing in western arabic translatedValues', () => {
+    const translatedValue = translateNumber(mockNumeralSystem, 'rt.09');
+    expect(translatedValue).toBe('34.09');
   });
 
-  it('returns NaN for invalid numbers', () => {
-    const number = translateNumber(Number.parseFloat, mockNumeralSystem, 'sdsdl23');
-    expect(Number.isNaN(number)).toBe(true);
+  it('does not modify the string in any other way', () => {
+    const translatedValue = translateNumber(mockNumeralSystem, 'sdsdl23');
+    expect(translatedValue).toBe('sdsdl23');
+  });
+
+  it('removes spaces from the input', () => {
+    const translatedValue = translateNumber(mockNumeralSystem, '  12');
+    expect(translatedValue).toBe('12');
   });
 });
