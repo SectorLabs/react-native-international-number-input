@@ -2,7 +2,7 @@
   "name": "react-native-international-number-input",
   "version": "0.0.1",
   "description": "A number input with support for different numeral systems.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/SectorLabs/react-native-international-number-input",
   "author": "Sector Labs <open-source@sectorlabs.ro>",
   "license": "MIT",
