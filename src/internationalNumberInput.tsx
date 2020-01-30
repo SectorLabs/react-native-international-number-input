@@ -35,7 +35,7 @@ const InternationalNumberInput = ({
 
   return (
     <TextInput
-      placeholder={(placeholder || '').toString()}
+      placeholder={!isNil(placeholder) ? placeholder.toString() : ''}
       keyboardType={keyboardType || 'decimal-pad'}
       value={text || ''}
       onChangeText={React.useCallback(
