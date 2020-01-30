@@ -1,5 +1,7 @@
 import { NumeralSystem } from './types';
 
+type InterpretFunc = (value: string | null) => number;
+
 /**
  * Translates a number that was written in the specified numeral
  * system into a {@see Number}.
@@ -9,9 +11,13 @@ import { NumeralSystem } from './types';
  * @returns NaN if the number could not be converted or the input
  * is not a valid number after translation.
  */
-const translateNumber = (numeralSystem: NumeralSystem, value: string | null): number => {
+const translateNumber = (
+  interpretFunc: InterpretFunc,
+  numeralSystem: NumeralSystem,
+  value: string | null,
+): number => {
   if (!value) {
-    return Number(value);
+    return interpretFunc(value);
   }
 
   let normalizedNumber = '';
@@ -32,7 +38,7 @@ const translateNumber = (numeralSystem: NumeralSystem, value: string | null): nu
     }
   }
 
-  return Number(normalizedNumber);
+  return interpretFunc(normalizedNumber);
 };
 
 export default translateNumber;

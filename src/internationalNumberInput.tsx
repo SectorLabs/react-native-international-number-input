@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput } from 'react-native';
+import { TextInput, KeyboardTypeOptions } from 'react-native';
 import isNil from 'lodash/isNil';
 
 import { NumeralSystem } from './types';
@@ -12,18 +12,36 @@ interface Props
   onChange: (value: number | null) => void;
 }
 
+const determineInterpretFunc = (keyboardType: KeyboardTypeOptions) => {
+  switch (keyboardType) {
+    case 'decimal-pad':
+    case 'numeric':
+      return Number.parseFloat;
+
+    case 'number-pad':
+      return Number.parseInt;
+
+    default:
+      throw new Error(
+        'Invalid keyboardType, this is a numeric input. Use a keyboardType that accepts numbers only.',
+      );
+  }
+};
+
 const InternationalNumberInput = ({
   numeralSystem,
   onChange,
   value,
   placeholder,
-  keyboardType,
+  keyboardType = 'decimal-pad',
   ...rest
 }: Props) => {
   const [text, setText] = React.useState<string | null>(!isNil(value) ? value.toString() : null);
 
+  const interpretFunc = determineInterpretFunc(keyboardType);
+
   const convertToNumber = React.useCallback(
-    (v: string | null) => translateNumber(numeralSystem, v),
+    (v: string | null) => translateNumber(interpretFunc, numeralSystem, v),
     [numeralSystem],
   );
 
