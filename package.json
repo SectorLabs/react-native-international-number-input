@@ -1,6 +1,6 @@
 {
   "name": "react-native-international-number-input",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A number input with support for different numeral systems.",
   "main": "dist/index.js",
   "repository": "https://github.com/SectorLabs/react-native-international-number-input",
