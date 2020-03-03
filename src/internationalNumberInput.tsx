@@ -14,14 +14,14 @@ interface Props
   onChange: (value: number | null) => void;
 }
 
-const InternationalNumberInput = ({
+const InternationalNumberInput = React.forwardRef<TextInput, Props>(({
   numeralSystem,
   onChange,
   value,
   placeholder,
   keyboardType = 'decimal-pad',
   ...rest
-}: Props) => {
+}, ref) => {
   const [text, setText] = React.useState<string | null>(!isNil(value) ? value.toString() : null);
 
   const numberType = keyboardTypeToNumberType(keyboardType);
@@ -39,6 +39,7 @@ const InternationalNumberInput = ({
 
   return (
     <TextInput
+      ref={ref}
       placeholder={!isNil(placeholder) ? placeholder.toString() : ''}
       keyboardType={keyboardType || 'decimal-pad'}
       value={text || ''}
@@ -59,6 +60,6 @@ const InternationalNumberInput = ({
       {...rest}
     />
   );
-};
+});
 
 export default InternationalNumberInput;
