@@ -3,7 +3,7 @@
     "outDir": "dist",
     "module": "esnext",
     "target": "es5",
-    "lib": ["es6"],
+    "lib": ["es2017"],
     "sourceMap": true,
     "allowJs": false,
     "jsx": "react",
