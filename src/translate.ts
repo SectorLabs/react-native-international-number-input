@@ -17,7 +17,7 @@ export const translateNumber = (
   for (let i = 0; i < value.length; ++i) {
     const char = value[i];
 
-    if (char === numeralSystem.decimalCharacter) {
+    if (numeralSystem.decimalCharacters.includes(char)) {
       normalizedNumber += '.';
       continue;
     }
