@@ -3,6 +3,7 @@ import { translateNumber } from '../translate';
 
 const mockNumeralSystem: NumeralSystem = {
   numberCharacters: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+  decimalCharacter: '~',
   decimalCharacters: ['|', '/'],
 };
 
@@ -15,8 +16,12 @@ describe('translateNumbers', () => {
   it('translates decimals', () => {
     const translatedValue = translateNumber(mockNumeralSystem, 'rt|qw');
     expect(translatedValue).toBe('34.01');
+
     const secondDecimal = translateNumber(mockNumeralSystem, 'rt/qw');
     expect(secondDecimal).toBe('34.01');
+
+    const thirdDecimal = translateNumber(mockNumeralSystem, 'rt~qw');
+    expect(thirdDecimal).toBe('34.01');
   });
 
   it('handles western arabic translatedValues', () => {
