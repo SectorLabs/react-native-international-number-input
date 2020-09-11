@@ -12,10 +12,24 @@ interface Props
   numeralSystem: NumeralSystem;
   value: number | null;
   onChange: (value: number | null) => void;
+  // validates if the new number is an accepted one
+  // it can be useful in cases like an input area where number should be larger than 0 and lower than x
+  numberValidator?: (value: number) => boolean;
 }
 
 const InternationalNumberInput = React.forwardRef<TextInput, Props>(
-  ({ numeralSystem, onChange, value, placeholder, keyboardType = 'decimal-pad', ...rest }, ref) => {
+  (
+    {
+      numeralSystem,
+      onChange,
+      value,
+      placeholder,
+      keyboardType = 'decimal-pad',
+      numberValidator,
+      ...rest
+    },
+    ref,
+  ) => {
     const [text, setText] = React.useState<string | null>(!isNil(value) ? value.toString() : null);
 
     const numberType = keyboardTypeToNumberType(keyboardType);
@@ -45,8 +59,10 @@ const InternationalNumberInput = React.forwardRef<TextInput, Props>(
               onChange(null);
               setText('');
             } else {
-              onChange(number);
-              setText(text);
+              if (!numberValidator || numberValidator(number)) {
+                onChange(number);
+                setText(text);
+              }
             }
           },
           [convertToNumber, text, setText, onChange],
